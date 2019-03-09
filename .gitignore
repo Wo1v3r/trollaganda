@@ -2,3 +2,5 @@ venv
 *.bin.gz
 *.zip
 *.csv
+model.json
+model.h5
