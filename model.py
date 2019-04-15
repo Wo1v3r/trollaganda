@@ -155,3 +155,6 @@ class TheModel(object):
         plt.ylabel("Accuracy")
         plt.legend(loc="upper left")
         plt.show()
+
+    def predict(self, data):
+        return self.model.predict(data)

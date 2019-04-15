@@ -132,6 +132,10 @@ class PrepareEmbedding(object):
 
         tokenizer = Tokenizer(num_words=config.MAXVOCABSIZE, lower=True, char_level=False)
         tokenizer.fit_on_texts(self.X_train)
+
+        # TODO: Should save tokenizer along with model incase of predicting with a loaded model
+        self.tokenizer = tokenizer
+
         training_sequences = tokenizer.texts_to_sequences(self.X_train)
 
         self.train_word_index = tokenizer.word_index
@@ -151,3 +155,35 @@ class PrepareEmbedding(object):
     def release_pre_trained(self):
         del self.pre_train
         self.pre_train = None
+
+
+    def preprocess_predictions(self, messages):
+        # def _standardize_text(self, text):
+        #     text = text.str.replace(r"http\S+", "LINK")
+        #     text = text.str.replace(r"@\S+", "TAG")
+        #     text = text.str.replace(r"[^A-Za-z0-9(),!?@\'\`\"\_\n]", " ")
+        #     text = text.str.replace(r"@", "AT ")
+        #     text = text.str.lower()
+        #     return text
+
+        def _tokenize_data(message_series):
+            # TOKENIZING THE TEXT
+            regextokenizer = RegexpTokenizer(r"\w+")
+            messages = message_series.apply(regextokenizer.tokenize)
+
+            # delete Stop Words
+            messages = messages.apply(lambda vec: [word for word in vec if word not in config.stopwords0])
+            return messages
+
+
+        series = pd.Series(messages)
+        series = series.astype(str)
+
+        tokenized_data = _tokenize_data(message_series=series)
+
+        predictSequences = self.tokenizer.texts_to_sequences(tokenized_data)
+        predictData = pad_sequences(predictSequences, maxlen=config.MAXSEQLENGTH)
+
+        return predictData
+
+

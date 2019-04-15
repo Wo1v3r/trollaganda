@@ -4,6 +4,7 @@ Main python script to run the program
 
 from embedding import ReadFile, PreProcess, PrepareEmbedding
 from model import TheModel
+from predictor import Predictor
 
 import config
 
@@ -42,3 +43,9 @@ model.train_model(
 model.evaluate_model(test_cnn_data=embed.test_cnn_data, Y_test=embed.Y_test)
 
 # TODO argparse, make the script above configurable(+glove)
+
+
+# Prediction example
+
+predictor = Predictor(model = model, embed = embed)
+predictor.predict(messages=["Some message @ https://google.com where @liran23 said he wants to read it", "Yossi is the man and he loves to post links online"])

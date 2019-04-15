@@ -4,3 +4,4 @@ venv
 *.csv
 model.json
 model.h5
+.vscode
