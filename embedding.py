@@ -124,7 +124,7 @@ class PrepareEmbedding(object):
         f.close()
         print("GloVe data loaded")
 
-    def train(self):
+    def train(self, max_vocab_size=config.MAXVOCABSIZE):
         try:
             if not self.pre_train:
                 raise Exception("Pre trained vocabulary isn't loaded.")
@@ -132,7 +132,7 @@ class PrepareEmbedding(object):
             print(e)
             return
 
-        tokenizer = Tokenizer(num_words=config.MAXVOCABSIZE, lower=True, char_level=False)
+        tokenizer = Tokenizer(num_words=max_vocab_size, lower=True, char_level=False)
         tokenizer.fit_on_texts(self.X_train)
 
         # TODO: Should save tokenizer along with model incase of predicting with a loaded model
@@ -157,7 +157,6 @@ class PrepareEmbedding(object):
     def release_pre_trained(self):
         del self.pre_train
         self.pre_train = None
-
 
     def preprocess_predictions(self, messages):
         # def _standardize_text(self, text):
@@ -187,5 +186,3 @@ class PrepareEmbedding(object):
         predictData = pad_sequences(predictSequences, maxlen=config.MAXSEQLENGTH)
 
         return predictData
-
-

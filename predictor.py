@@ -13,8 +13,7 @@ class Predictor(object):
 
         for i in range(len(messages)):
             isTroll = predictions[i] > 0.5
-            print("Message: [%s], Prediction: [%s]" % (
-            messages[i], "Troll" if isTroll else "Not a Troll"))
+            print("Message: [%s], Prediction: [%s]" % (messages[i], "Troll" if isTroll else "Not a Troll"))
             results.append(isTroll)
 
         return results
