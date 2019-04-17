@@ -72,7 +72,8 @@ class PrepareEmbedding(object):
         self.embedded_path = embedded_path
         self.pre_train = None
         self._prepare_labels()
-        self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(X, Y, test_size=self.test_size)
+
+        self.X_train, self.X_test, self.Y_train, self.Y_test = train_test_split(self.X, self.Y, test_size=self.test_size)
         self.train_embedding_weights = None
         self.train_cnn_data = None
         self.test_cnn_data = None
@@ -82,6 +83,7 @@ class PrepareEmbedding(object):
         le = LabelEncoder()
         self.Y = le.fit_transform(self.Y)
         self.Y = self.Y.reshape(-1, 1)
+
 
     def _tokenize_messages(self):
         # TOKENIZING THE TEXT
