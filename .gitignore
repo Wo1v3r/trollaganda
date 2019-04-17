@@ -5,3 +5,5 @@ venv
 model.json
 model.h5
 .vscode
+.idea
+__pycache__

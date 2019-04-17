@@ -18,11 +18,11 @@ for cs in fileList:
         for row in reader:
             if 'English' in row[4] and 'Unknown' not in row[13]:
                 if row[13] in propogandaCat:
-                    tweets.append([row[2], '1']
+                    tweets.append([row[2], '1'])
                     count_trolls['Troll'] += 1
                 else:
-                    tweets.append([row[2], '0']
-                    count_trolls['Not troll'] += 1  
+                    tweets.append([row[2], '0'])
+                    count_trolls['Not troll'] += 1
 
 print(count_trolls)  # {'Troll': 1138095, 'Not troll': 971827}
 
