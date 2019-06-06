@@ -10,35 +10,37 @@ import config
 
 
 def setup(args):
-
     model = None
-    embed = None
+    # embed = None
+
+    readfile = ReadFile(path=args.input, split=args.split)
+    readfile.readfile()
+    if args.plot:
+        readfile.distribution_plot()
+
+
+    pre_proc = PreProcess(data=readfile.data, textfield="message")
+    pre_proc.process_text()
+    if args.plot:
+        pre_proc.see_data_head()
+    # TODO add opional paths for pre-train word sets
+
+    embedded_path = "./GoogleNews-vectors-negative300.bin.gz" if args.word2vec else "./glove.txt"
+    embed = PrepareEmbedding(
+        X=readfile.data.message,
+        Y=readfile.data.isTroll,
+        embedded_path=embedded_path
+    )
+    if args.plot:
+        embed.print_info()
+    if args.word2vec:
+        embed.load_word_2_vec()
+    else:
+        embed.load_glove()
+    embed.train(args.max_vocabulary)
+    embed.release_pre_trained()
+
     if args.train:
-        readfile = ReadFile(path=args.input, split=args.split)
-        readfile.readfile()
-        if args.plot:
-            readfile.distribution_plot()
-
-        pre_proc = PreProcess(data=readfile.data, textfield="message")
-        pre_proc.process_text()
-        if args.plot:
-            pre_proc.see_data_head()
-        # TODO add opional paths for pre-train word sets
-        embedded_path = "./GoogleNews-vectors-negative300.bin.gz" if args.word2vec else "./glove.txt"
-        embed = PrepareEmbedding(
-            X=readfile.data.message,
-            Y=readfile.data.isTroll,
-            embedded_path=embedded_path
-        )
-        if args.plot:
-            embed.print_info()
-        if args.word2vec:
-            embed.load_word_2_vec()
-        else:
-            embed.load_glove()
-        embed.train(args.max_vocabulary)
-        embed.release_pre_trained()
-
         model = TheModel()
         model.conv_net(
             embeddings=embed.train_embedding_weights,
@@ -74,11 +76,7 @@ def setup(args):
         # TODO split embed from predictor
         predictor = Predictor(model=model, embed=embed)
         # Example of prediction
-        predictor.predict(
-            messages=[
-                "Some message @ https://google.com where @liran23 said he wants to read it",
-                "Yossi is the man and he loves to post links online"
-            ]
-        )
 
         predictor.predict(messages=args.predict)
+
+        return predictor

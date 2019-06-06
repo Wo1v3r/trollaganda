@@ -121,7 +121,7 @@ class TheModel(object):
         with open(path + "/model.json", "w") as json_file:
             json_file.write(model_json)
 
-        self.model.save_weights(path + "./model.h5")
+        self.model.save_weights(path + "/model.h5")
         print("Model Saved")
 
     def print_loss_plot(self):

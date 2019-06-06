@@ -37,30 +37,6 @@ class PreProcess(object):
         self.data.head()
 
 
-class ReadFile(object):
-    """
-    Reading the datasets class.
-    The data set should be two columns,
-    tweet and classification(1 is troll)
-    """
-    def __init__(self, path, split=None):
-        self.path = path
-        self.split = split
-        self.data = None
-
-    def readfile(self):
-        self.data = pd.read_csv(self.path, delimiter=",", encoding="utf8", names=["message", "isTroll"])
-        self.data.message = self.data.message.astype(str)
-
-        self.data = self.data.iloc[:self.split] if self.split > 0 else self.data
-
-    def distribution_plot(self):
-        if self.data is not None:
-            sns.countplot(self.data.isTroll)
-            plt.xlabel("Label")
-            plt.title("Number of troll or not messages")
-
-
 class PrepareEmbedding(object):
     """
     This class is used to create the embedding on the data
@@ -186,3 +162,27 @@ class PrepareEmbedding(object):
         predictData = pad_sequences(predictSequences, maxlen=config.MAXSEQLENGTH)
 
         return predictData
+
+
+class ReadFile(object):
+    """
+    Reading the datasets class.
+    The data set should be two columns,
+    tweet and classification(1 is troll)
+    """
+    def __init__(self, path, split=None):
+        self.path = path
+        self.split = split
+        self.data = None
+
+    def readfile(self):
+        self.data = pd.read_csv(self.path, delimiter=",", encoding="utf8", names=["message", "isTroll"])
+        self.data.message = self.data.message.astype(str)
+
+        self.data = self.data.iloc[:self.split] if self.split > 0 else self.data
+
+    def distribution_plot(self):
+        if self.data is not None:
+            sns.countplot(self.data.isTroll)
+            plt.xlabel("Label")
+            plt.title("Number of troll or not messages")

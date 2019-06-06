@@ -9,11 +9,14 @@ class Predictor(object):
         data = self.embed.preprocess_predictions(messages)
         predictions = self.model.predict(data)
 
-        results = []
+        results = list()
 
         for i in range(len(messages)):
             isTroll = predictions[i] > 0.5
             print("Message: [%s], Prediction: [%s]" % (messages[i], "Troll" if isTroll else "Not a Troll"))
+
             results.append(isTroll)
+
+            print(results)
 
         return results
