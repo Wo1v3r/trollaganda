@@ -38,35 +38,53 @@ function toMessages(node) {
 }
 
 function withTextContainer(node) {
-  return node.querySelector('.js-tweet-text-container');
+  return !!node.querySelector('.js-tweet-text-container');
 }
 
-function colorPredictions(messages = []) {
-  const _messages = messages.map(({ text }) => text);
-  // new Promise(resolve => setTimeout(resolve, 1000))
-  fetch('http://localhost:9090/predict', {
+function extractText({ text }) {
+  return text;
+}
+
+function getPredictions(messages) {
+  return fetch('http://localhost:9090/predict', {
     method: 'POST',
-    body: JSON.stringify({ messages: _messages }),
+    body: JSON.stringify({ messages: messages.map(extractText) }),
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
     }
-  })
-    .then(response => response.json())
+  }).then(response => response.json());
+}
+
+function colorPredictions(messages = []) {
+  getPredictions(messages)
     .then(predictions => {
       messages.forEach((message, index) => {
-        console.info(predictions[index]);
-
         colorTweet({ ...message, prediction: predictions[index] });
       });
     })
-    .catch(err => {
-      console.warn(err);
-    });
+    .catch(onError);
 }
 
-function colorTweet(message) {
-  document.querySelector(
-    `li [data-item-id="${message.id}"]`
-  ).style.backgroundColor = message.prediction ? 'red' : 'green';
+function onError(err) {
+  console.warn(err);
 }
+
+function colorTweet({ id, prediction }) {
+  document.querySelector(`li [data-item-id="${id}"]`).style.backgroundColor = prediction
+    ? 'red'
+    : 'green';
+}
+
+module.exports = {
+  pollTrollOrNot,
+  trollOrNot,
+  getPageMessageNodes,
+  toMessages,
+  withTextContainer,
+  extractText,
+  getPredictions,
+  colorPredictions,
+  onError,
+  colorTweet
+};

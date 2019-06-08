@@ -2,8 +2,7 @@ venv
 *.bin.gz
 *.zip
 *.csv
-model.json
-model.h5
 .vscode
 .idea
 __pycache__
+ext/node_modules
