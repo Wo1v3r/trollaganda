@@ -7,7 +7,7 @@ def parseArgs():
     loaded.add_argument("-t", "--train", action="store_true", help="Train the data-sets and model")
     parser.add_argument("-p", "--predict", nargs="+", help="Predict given strings")
     loaded.add_argument("-l", "--load_model",
-                        nargs="?", default="./model", help="Load the model from a given path, default path is \"./model\"")
+                        nargs="?", default="./model/model", help="Load the model from a given path, default path is \"./model\"")
     parser.add_argument("--split", nargs="?", type=int,
                         default=10000, help="Split the data-sets to a smaller one, default is 10000")
     parser.add_argument("--embedding_dim", nargs="?",
