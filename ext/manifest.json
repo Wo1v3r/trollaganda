@@ -1,13 +1,13 @@
 {
-  "name": "CHANGE THIS : Extension boilerplate",
+  "name": "Trollaganda Chrome Extension",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "This extension was created with the awesome extensionizr.com",
-  "homepage_url": "http://extensionizr.com",
+  "description": "Tag Trolls on Twitter",
+  "homepage_url": "http://github.com/wo1v3r/trollaganda",
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icons/troll-16.png",
+    "48": "icons/troll-48.png",
+    "256": "icons/troll-256.png"
   },
   "default_locale": "en",
   "background": {
@@ -15,8 +15,8 @@
     "persistent": true
   },
   "page_action": {
-    "default_icon": "icons/icon19.png",
-    "default_title": "page action demo",
+    "default_icon": "icons/troll-48.png",
+    "default_title": "Tag em Trollz",
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
